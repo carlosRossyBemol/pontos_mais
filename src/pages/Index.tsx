@@ -10,7 +10,7 @@ import WithdrawBonus from "@/components/WithdrawBonus";
 import CustomersList from "@/components/CustomersList";
 import TransactionHistory from "@/components/TransactionHistory";
 
-const Dashboard = () => {
+const Index = () => {
   const navigate = useNavigate();
   const [businessName, setBusinessName] = useState("");
   const [loading, setLoading] = useState(true);
@@ -107,4 +107,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Index;
