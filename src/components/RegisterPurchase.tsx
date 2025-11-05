@@ -203,6 +203,20 @@ export const RegisterPurchase = () => {
     }
   };
 
+  const formatPhoneInput = (value: string) => {
+    const cleaned = value.replace(/\D/g, "");
+
+    if (cleaned.length <= 2) {
+      return `(${cleaned}`;
+    } else if (cleaned.length <= 7) {
+      return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2)}`;
+    } else if (cleaned.length <= 11) {
+      return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 7)}-${cleaned.slice(7, 11)}`;
+    } else {
+      return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 7)}-${cleaned.slice(7, 11)}`;
+    }
+  };
+
   return (
     <>
       <Card>
@@ -274,11 +288,18 @@ export const RegisterPurchase = () => {
               <Input
                 id="new-phone"
                 placeholder="(00) 00000-0000"
+                maxLength={15}
                 value={newCustomer.phone}
-                onChange={(e) => setNewCustomer({ ...newCustomer, phone: e.target.value })}
+                onChange={(e) =>
+                  setNewCustomer({
+                    ...newCustomer,
+                    phone: formatPhoneInput(e.target.value),
+                  })
+                }
                 disabled={loading}
               />
             </div>
+
             <div className="flex gap-2">
               <Button
                 variant="outline"

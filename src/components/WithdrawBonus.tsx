@@ -70,11 +70,18 @@ const WithdrawBonus = () => {
 
       // Verificar saldo
       if (customer.bonus_balance < withdrawAmount || customer.points < pointsToDeduct) {
-        toast.error(
-          `Saldo insuficiente. Bônus: R$ ${customer.bonus_balance.toFixed(
-            2
-          )} | Pontos: ${customer.points}`
-        );
+        toast.custom(() => (
+          <div className="p-4 rounded-xl bg-red-50 border border-red-200 shadow-md text-red-700 space-y-2 max-w-sm">
+            <h3 className="text-base font-semibold flex items-center gap-2">
+              ⚠️ Saldo insuficiente
+            </h3>
+            <p>O cliente não possui bônus suficiente para este resgate.</p>
+            <div className="text-sm mt-2 space-y-1">
+              <p><strong>Bônus disponível:</strong> R$ {customer.bonus_balance.toFixed(2)}</p>
+              <p><strong>Pontos:</strong> {customer.points}</p>
+            </div>
+          </div>
+        ), { duration: 5000 });
         setLoading(false);
         return;
       }

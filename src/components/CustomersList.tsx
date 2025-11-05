@@ -148,6 +148,19 @@ const CustomersList = () => {
     );
   }
 
+  const formatPhone = (phone: string) => {
+  if (!phone) return "-";
+  const cleaned = phone.replace(/\D/g, "");
+
+  if (cleaned.length === 11) {
+    return cleaned.replace(/^(\d{2})(\d{5})(\d{4})$/, "($1) $2-$3");
+  } else if (cleaned.length === 10) {
+    return cleaned.replace(/^(\d{2})(\d{4})(\d{4})$/, "($1) $2-$3");
+  } else {
+    return phone;
+  }
+};
+
   return (
     <>
       <Card>
@@ -182,6 +195,7 @@ const CustomersList = () => {
                   <TableRow>
                     <TableHead>Nome</TableHead>
                     <TableHead>CPF</TableHead>
+                    <TableHead>Telefone</TableHead> {/* 👈 nova coluna */}
                     <TableHead className="text-center">Código</TableHead>
                     <TableHead className="text-center">Pontos</TableHead>
                     <TableHead className="text-center">Bônus</TableHead>
@@ -193,6 +207,7 @@ const CustomersList = () => {
                     <TableRow key={customer.id}>
                       <TableCell className="font-medium">{customer.name}</TableCell>
                       <TableCell>{customer.cpf}</TableCell>
+                      <TableCell>{formatPhone(customer.phone)}</TableCell>
                       <TableCell className="text-center">
                         <Badge variant="outline" className="font-mono text-base px-3">
                           {customer.code}
