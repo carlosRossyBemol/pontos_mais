@@ -80,6 +80,7 @@ const CustomersList = () => {
     }).format(value);
   };
 
+  
   const handleRedeemBonus = async () => {
     if (!selectedCustomer || !redeemAmount) {
       toast.error("Preencha o valor a resgatar");
@@ -89,6 +90,13 @@ const CustomersList = () => {
     const amount = parseFloat(redeemAmount);
     if (isNaN(amount) || amount <= 0) {
       toast.error("Valor inválido");
+      return;
+    }
+
+    const pointsToDeduct = Math.ceil(amount * 50);
+
+    if (pointsToDeduct > selectedCustomer.points) {
+      toast.error("Pontos insuficientes para este resgate");
       return;
     }
 
@@ -105,7 +113,10 @@ const CustomersList = () => {
       const { error: updateError } = await supabase
         .from("customers")
         .update({
-          bonus_balance: selectedCustomer.bonus_balance - amount,
+          bonus_balance: Number(
+            (selectedCustomer.bonus_balance - amount).toFixed(2)
+          ),
+          points: selectedCustomer.points - pointsToDeduct,
         })
         .eq("id", selectedCustomer.id);
 
@@ -119,7 +130,7 @@ const CustomersList = () => {
           customer_id: selectedCustomer.id,
           type: "redemption",
           amount: amount,
-          points: 0,
+          points: - pointsToDeduct,
         });
 
       if (transactionError) throw transactionError;

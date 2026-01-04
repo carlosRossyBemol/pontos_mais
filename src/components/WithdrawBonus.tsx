@@ -66,7 +66,7 @@ const WithdrawBonus = () => {
       }
 
       // Calcular pontos equivalentes (R$10 = 500 pontos → R$1 = 50 pontos)
-      const pointsToDeduct = (withdrawAmount / 10) * 500;
+      const pointsToDeduct = Math.ceil(withdrawAmount * 50);
 
       // Verificar saldo
       if (customer.bonus_balance < withdrawAmount || customer.points < pointsToDeduct) {
@@ -86,7 +86,9 @@ const WithdrawBonus = () => {
         return;
       }
 
-      const newBonusBalance = customer.bonus_balance - withdrawAmount;
+      const newBonusBalance = Number(
+        (customer.bonus_balance - withdrawAmount).toFixed(2)
+      );
       const newPointsBalance = customer.points - pointsToDeduct;
 
       // Atualizar saldos do cliente
